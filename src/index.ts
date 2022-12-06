@@ -1,7 +1,7 @@
 /**
  * @Author       : Humility
  * @Date         : 2022-12-05 17:35:56
- * @LastEditTime : 2022-12-05 17:47:10
+ * @LastEditTime : 2022-12-05 19:50:20
  * @LastEditors  : Humility
  * @FilePath     : \miot-open-pc\src\index.ts
  * @Description  :
@@ -21,7 +21,8 @@ const staticIP = "192.168.1.129"; // 2,电脑局域网固定IP，用于检测电
 const pcUsr = "Administrator"; // 3,电脑ssh用户名
 const pcPwd = "123456"; // 4,电脑ssh密码
 // const pcMac = "24:4B:FE:8A:7C:B2"; // 5,MAC地址，改成你自己电脑网卡的
-const pcMac = "A8:A1:59:01:33:77";
+// const pcMac = "A8:A1:59:01:33:77"; // lst
+const pcMac = "54:BF:64:49:E6:08"; // whh
 
 let buttonLock = false; // 锁定开关(状态更新前不能控制)
 let switchState = ""; // 电脑状态 on/off
@@ -107,6 +108,7 @@ async function buttonCallback(state: string) {
   if (buttonLock == false) {
     device.log("发送开机指令...");
     if (state == "on") {
+      button1.text("开机中").update();
       if (canReceiveCommand(pingCMD)) {
         switchState = "on";
         device.log("检测到电脑已开,按钮状态已更新.");
@@ -121,6 +123,7 @@ async function buttonCallback(state: string) {
         while (!canReceiveCommand(pingCMD) && timer < timeout) {
           await sleep(step);
           timer += step;
+          console.log(!canReceiveCommand(pingCMD), timer, timeout);
         }
         if (timer >= timeout) {
           device.log("开机超时！");
@@ -133,6 +136,7 @@ async function buttonCallback(state: string) {
         buttonLock = false;
       }
     } else if (state == "off") {
+      button1.text("关机中").update();
       if (canReceiveCommand(pingCMD)) {
         device.log("发送关键机指令...");
         switchState = "off";
@@ -143,6 +147,7 @@ async function buttonCallback(state: string) {
         while (canReceiveCommand(pingCMD) && timer < timeout) {
           await sleep(step);
           timer += step;
+          console.log(canReceiveCommand(pingCMD), timer, timeout);
         }
         if (timer >= timeout) {
           device.log("关机超时！");
