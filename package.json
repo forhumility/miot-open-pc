@@ -2,7 +2,6 @@
   "name": "miot-open-pc",
   "version": "0.1.0",
   "description": "小爱同学远程开关机",
-  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
@@ -17,9 +16,9 @@
   "license": "MIT",
   "dependencies": {
     "@types/bonjour": "^3.5.10",
-    "@types/node": "^18.11.10",
+    "@types/node": "^18.11.11",
     "@types/node-schedule": "^2.1.0",
-    "axios": "^1.2.0",
+    "axios": "^1.2.1",
     "bonjour": "^3.5.0",
     "commander": "^9.4.1",
     "getmac": "^5.20.0",
