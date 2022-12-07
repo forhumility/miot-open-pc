@@ -1,7 +1,7 @@
 /**
  * @Author       : Humility
  * @Date         : 2022-12-05 17:35:56
- * @LastEditTime : 2022-12-07 14:32:54
+ * @LastEditTime : 2022-12-07 14:38:18
  * @LastEditors  : Humility
  * @FilePath     : \miot-open-pc\src\index.ts
  * @Description  :
@@ -91,6 +91,7 @@ device.ready().then(() => {
 });
 function heartbeatCallback(msg) {
   console.log("heartbeatCallback:", msg);
+  if (buttonLock) return; // 开关机操作中忽略心跳信息
   if (canReceiveCommand(pingCMD)) {
     switchState = "on";
     button1.turn("on").text("已开机").update();
