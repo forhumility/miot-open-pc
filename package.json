@@ -4,6 +4,7 @@
   "description": "小爱同学远程开关机",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "ts-node ./src/index.ts",
     "build": "tsc"
   },
   "keywords": [
