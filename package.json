@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "serve": "ts-node ./src/index.ts",
-    "build": "tsc"
+    "build": "tsc && copy .\\package.json .\\dist"
   },
   "keywords": [
     "miot",
@@ -15,6 +15,12 @@
     "ssh"
   ],
   "author": "Humility",
+  "contributors": [
+    {
+      "name": "Humility",
+      "email": "for_humility@foxmail.com"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
     "@types/bonjour": "^3.5.10",
