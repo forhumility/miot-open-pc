@@ -1,7 +1,7 @@
 /**
  * @Author       : Humility
  * @Date         : 2022-12-05 17:35:56
- * @LastEditTime : 2022-12-07 14:38:18
+ * @LastEditTime : 2022-12-13 16:06:02
  * @LastEditors  : Humility
  * @FilePath     : \miot-open-pc\src\index.ts
  * @Description  :
@@ -17,7 +17,7 @@ const { Client } = require("ssh2");
 const wol = require("wake_on_lan");
 
 const auth = "7bfcf4354aa1"; // 1,点灯app上获得的密匙
-const staticIP = "192.168.1.129"; // 2,电脑局域网固定IP，用于检测电脑开关状态以及利用SSH关机，改为你的设置
+const staticIP = "192.168.1.112"; // 2,电脑局域网固定IP，用于检测电脑开关状态以及利用SSH关机，改为你的设置
 const pcUsr = "Administrator"; // 3,电脑ssh用户名
 const pcPwd = "123456"; // 4,电脑ssh密码
 // const pcMac = "24:4B:FE:8A:7C:B2"; // 5,MAC地址，改成你自己电脑网卡的
@@ -42,7 +42,7 @@ let button1: ButtonWidget = device.addWidget(new ButtonWidget("btn-pc1"));
 device.ready().then(() => {
   // 电源状态改变
   miot.powerChange.subscribe((message) => {
-    console.log("miot.powerChange", message);
+    // console.log("miot.powerChange", message);
     device.log(message);
     switch (message.data.set.pState) {
       case "true":
@@ -59,7 +59,7 @@ device.ready().then(() => {
   });
   //
   miot.stateQuery.subscribe((message) => {
-    console.log("miot.stateQuery", message);
+    // console.log("miot.stateQuery", message);
     // 问小爱电脑开了吗，ping一次获得电脑实际状态
     if (canReceiveCommand(pingCMD)) {
       switchState = "on";
@@ -74,23 +74,23 @@ device.ready().then(() => {
   });
   // 设备其他信息
   device.dataRead.subscribe((message) => {
-    console.log("otherData:", message);
+    // console.log("otherData:", message);
   });
   // 开关操作监听
   button1.listen().subscribe((message) => {
-    console.log("button1:", message);
+    // console.log("button1:", message);
     const change = switchState == "on" ? "off" : "on";
     buttonCallback(change);
     device.push("blinker push");
   });
   // 设备开关
   device.builtinSwitch.change.subscribe((message) => {
-    console.log("builtinSwitch:", message);
+    // console.log("builtinSwitch:", message);
     device.builtinSwitch.setState(switchState).update();
   });
 });
 function heartbeatCallback(msg) {
-  console.log("heartbeatCallback:", msg);
+  // console.log("heartbeatCallback:", msg);
   if (buttonLock) return; // 开关机操作中忽略心跳信息
   if (canReceiveCommand(pingCMD)) {
     switchState = "on";
@@ -124,7 +124,7 @@ async function buttonCallback(state: string) {
         while (!canReceiveCommand(pingCMD) && timer < timeout) {
           await sleep(step);
           timer += step;
-          console.log(!canReceiveCommand(pingCMD), timer, timeout);
+          // console.log(!canReceiveCommand(pingCMD), timer, timeout);
         }
         if (timer >= timeout) {
           device.log("开机超时！");
@@ -148,7 +148,7 @@ async function buttonCallback(state: string) {
         while (canReceiveCommand(pingCMD) && timer < timeout) {
           await sleep(step);
           timer += step;
-          console.log(canReceiveCommand(pingCMD), timer, timeout);
+          // console.log(canReceiveCommand(pingCMD), timer, timeout);
         }
         if (timer >= timeout) {
           device.log("关机超时！");
